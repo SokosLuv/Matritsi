@@ -2,24 +2,33 @@
 
 using namespace std;
 
-int a[100][100]{};
-int b[100][100]{};
+//int a[100][100]{};
+//int b[100][100]{};
 
-void MatrixInput(int m, int n)
+int** MatrixInput(int** a, int m, int n)
 {
     //cout << m <<""<< n << endl;
-    for (int i = 0; i < m; i++)
+    /*for (int i = 0; i < m; i++)
     {
         for (int j = 0; j < n; j++)
         {
             cout << "enter element " << i + 1 << " " << j + 1 << endl;
             cin >> a[i][j];
-            b[i][j] = a[i][j];
+        }
+    }*/
+    a = new int* [m];
+    for (int i = 0; i < m; i++) {
+        a[i] = new int[n];
+        for (int j = 0; j < n; j++) 
+        {
+            cout << "enter element " << i + 1 << " " << j + 1 << endl;
+            cin >> a[i][j];
         }
     }
+    return a;
 }
 
-void MatrixOutput(int m,int n)
+void MatrixOutput(int** a, int m,int n)
 {
     cout << endl;
     for (int i = 0; i < m; i++)
@@ -31,7 +40,7 @@ void MatrixOutput(int m,int n)
         cout << endl;
     }
     cout << endl;
-    cout << endl;
+    /*cout << endl;
     for (int i = 0; i < m; i++)
     {
         for (int j = 0; j < n; j++)
@@ -40,37 +49,57 @@ void MatrixOutput(int m,int n)
         }
         cout << endl;
     }
-    cout << endl;
+    cout << endl;*/
 }
 
-void MatrixMultiplication(int m, int n, int x)
+int** MatrixMultiplication(int** a, int m, int n, int x)
 {
+    int** b = new int* [m];
     for (int i = 0; i < m; i++)
     {
+        b[i] = new int [n];
         for (int j = 0; j < n; j++)
         {
-            a[i][j] = a[i][j] * x;
+            b[i][j] = a[i][j] * x;
         }
     }
+    return b;
 }
 
-void AnotherMatrixMultiplication(int m, int n)
+int** AnotherMatrixMultiplication(int** a, int**b, int** c, int m, int n)
 {
-
+    c = new int* [m];
+    for (int i = 0; i < m; i++)
+    {
+        c[i] = new int [n];
+        for (int j = 0; j < n; j++)
+        {
+            c[i][j] = 0;
+            for (int ii = 0; ii < n; ii++)
+            {
+                c[i][j] = c[i][j] + a[i][ii] * b[ii][j];
+            }  
+        }
+    }
+    return c;
 }
 
 int main()
 {
     int m, n,x, mm,nn;
-    cout << "enter sizes of matrix (height x width)" << endl;
-    cin >> m >> n;
+    int** a = nullptr;
+    int** b = nullptr;
+    int** c = nullptr;
+    cout << "enter size of matrix" << endl;
+    cin >> m;
+    n = m;
     while ((m < 1) || (n < 1)||(m>100)||(n>100))
     {
         cout << "invalid number try again" << endl;
         cin >> m >> n;
     }
-    MatrixInput(m, n );
-    MatrixOutput(m, n);
+    a = MatrixInput(a, m, n );
+    MatrixOutput(a, m, n);
     //cout << endl << "enter multiplication" << endl;
     //cin >> x;
     //MatrixMultiplication(m, n, x);
@@ -93,6 +122,16 @@ int main()
     }
     cout << endl;*/
     //MatrixOutput(m, n);
+    cout << endl << "enter second matrix" << endl;
+    b = MatrixInput(b, m, n);
+    MatrixOutput(b, m, n);
+    /*cout << endl << "enter multiplier" << endl;
+    cin >> x;*/
+    /*c = MatrixMultiplication(c,a, m, n,x);*/
+    
+    cout << endl;
+    c=AnotherMatrixMultiplication(a, b, c,m, n);
+    MatrixOutput(c, m, n);
     cout << endl;
     system("pause");
 }
