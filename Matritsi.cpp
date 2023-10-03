@@ -84,6 +84,24 @@ int** AnotherMatrixMultiplication(int** a, int**b, int** c, int m, int n)
     return c;
 }
 
+void Transpozitsii(int* a, int b)
+{
+    int c = 1;
+    for (int i = 1;  i <= b; i++)
+    {
+        c = c * i;
+    }
+    for (int i = 1; i <= c; i++)
+    {       
+        cout << "{";
+        for (int i = 1; i <= b; i++)
+        {
+            cout <<a[i]<<", ";
+        }
+        cout << endl;
+    }
+}
+
 int main()
 {
     int m, n,x, mm,nn;
