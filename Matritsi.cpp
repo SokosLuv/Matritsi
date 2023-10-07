@@ -1,4 +1,5 @@
 ﻿#include <iostream>
+#include <algorithm>
 
 using namespace std;
 
@@ -102,13 +103,55 @@ void Transpozitsii(int* a, int b)
     }
 }
 
+void printArr(int a[], int n)
+{
+    for (int i = 0; i < n; i++)
+        cout << a[i] << ' ';
+    cout << '\n';
+}
+
+int znaki(int a[], int n)
+{
+    int znak = 1;
+    for (int i = 0; i < n; i++)
+    {
+        for (int j = i + 1; j < n; j++)
+        {
+            if (a[j] < a[i])
+            {
+                znak = znak * (-1);
+            }
+        }
+    }
+    return znak;
+}
+void heapPermutation(int a[], int size, int n)
+{
+    if (size == 1) {
+        printArr(a, n);
+        cout << znaki(a, n) << endl << endl;
+        return;
+    }
+
+    for (int i = 0; i < size; i++) {
+        heapPermutation(a, size - 1, n);
+
+        if (size % 2 == 1) {
+            std::swap(a[0], a[size - 1]);
+        }
+        else {
+            std::swap(a[i], a[size - 1]);
+        }
+    }
+}
+
 int main()
 {
-    int m, n,x, mm,nn;
-    int** a = nullptr;
+    int m, x, mm,nn;
+    //int** a = nullptr;
     int** b = nullptr;
     int** c = nullptr;
-    cout << "enter size of matrix" << endl;
+    /*cout << "enter size of matrix" << endl;
     cin >> m;
     n = m;
     while ((m < 1) || (n < 1)||(m>100)||(n>100))
@@ -117,7 +160,8 @@ int main()
         cin >> m >> n;
     }
     a = MatrixInput(a, m, n );
-    MatrixOutput(a, m, n);
+    MatrixOutput(a, m, n);*/
+
     //cout << endl << "enter multiplication" << endl;
     //cin >> x;
     //MatrixMultiplication(m, n, x);
@@ -140,16 +184,19 @@ int main()
     }
     cout << endl;*/
     //MatrixOutput(m, n);
-    cout << endl << "enter second matrix" << endl;
+   /* cout << endl << "enter second matrix" << endl;
     b = MatrixInput(b, m, n);
-    MatrixOutput(b, m, n);
+    MatrixOutput(b, m, n);*/
     /*cout << endl << "enter multiplier" << endl;
     cin >> x;*/
     /*c = MatrixMultiplication(c,a, m, n,x);*/
-    
     cout << endl;
-    c=AnotherMatrixMultiplication(a, b, c,m, n);
-    MatrixOutput(c, m, n);
+    /*c=AnotherMatrixMultiplication(a, b, c,m, n);
+    MatrixOutput(c, m, n);*/
+    int a[] = { 1, 2, 3 };
+    int n = sizeof a / sizeof a[0];
+    heapPermutation(a, n, n);
+    cout << znaki(a, n);
     cout << endl;
     system("pause");
 }
