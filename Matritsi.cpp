@@ -145,20 +145,111 @@ void heapPermutation(int p[], int size, int n)
     }
 }
 
-int Monom(int** a, int p[], int n)
+/*int Monom(int** a, int p[], int n)
 {
     int m = 1;
     for (int i=0; i<n)
+
     m=m*a[0]
+}*/
+
+int** copy(int** a, int m)
+{
+    int n = m;
+    int** b = new int* [m];
+    for (int i = 0; i < m; i++)
+    {
+        b[i] = new int[n];
+        for (int j = 0; j < n; j++)
+        {
+            b[i][j] = a[i][j];
+        }
+    }
+    return b;
+}
+
+int** edinichniy(int m)
+{
+    int n = m;
+    int** b = new int* [m];
+    for (int i = 0; i < m; i++)
+    {
+        b[i] = new int[n];
+        for (int j = 0; j < n; j++)
+        {
+            if (i == j)
+            {
+                b[i][j] = 1;
+            }
+            else
+            {
+                b[i][j] = 0;
+            }
+        }
+    }
+    return b;
+}
+
+void change_row(int** a, int k, int j, int m)
+{
+    for (int i = 0; i < m; i++)
+    {
+        int x = a[j][i];
+        a[j][i] = a[k][i];
+        a[k][i] = x;
+    }
+
+}
+
+void mult_row(int** a, int k, int b, int m)
+{
+    for (int i = 0; i < m; i++)
+    {
+        a[k][i] = a[k][i] * b;
+    }
+}
+
+void substract_row(int** a, int k, int j, int b, int m)
+{
+    for (int i = 0; i < m; i++)
+    {
+        a[k][i] = a[k][i] - b * a[j][i];
+    }
+}
+
+float** inverse(int** a, int m)
+{
+    int** e = copy(a, m);
+    float** f = edinichniy(m);
+    for (int p = 0; p < m; p++)
+    {
+        if (e[p][p] != 0)
+        {
+            float x = 1 / e[p][p];
+            mult_row(e, p, x, m);
+            mult_row(f, p, x, m);
+        }
+        for (int i = p + 1; i < m; i++)
+        {
+            if (e[i][p] != 0)
+            {
+                int x = e[i][0] / e[0][0];
+                substract_row(e, i, 1, x, m);
+                substract_row(f, i, 1, x, m);
+            }
+        }
+        
+    }
+    return f;
 }
 
 int main()
 {
-    int m, x, mm,nn;
-    //int** a = nullptr;
+    int m, x, mm,nn,n;
+    int** a = nullptr;
     int** b = nullptr;
     int** c = nullptr;
-    /*cout << "enter size of matrix" << endl;
+    cout << "enter size of matrix" << endl;
     cin >> m;
     n = m;
     while ((m < 1) || (n < 1)||(m>100)||(n>100))
@@ -166,44 +257,9 @@ int main()
         cout << "invalid number try again" << endl;
         cin >> m >> n;
     }
-    a = MatrixInput(a, m, n );
-    MatrixOutput(a, m, n);*/
+    MatrixInput(a, m,m);
+    float** ff=inverse(a, m);
 
-    //cout << endl << "enter multiplication" << endl;
-    //cin >> x;
-    //MatrixMultiplication(m, n, x);
-    ////cout << m <<""<< n << endl;
-    //for (int i = 0; i < m; i++)
-    //{
-    //    for (int j = 0; j < n; j++)
-    //    {
-    //        cout << "enter element " << i+1 << " " << j+1 << endl;
-    //        cin >> mas[i][j];
-    //    }
-    //}
-    /*for (int i = 0; i < m; i++)
-    {
-        for (int j = 0; j < n; j++)
-        {
-            cout << mas[i][j]<<" ";
-        }
-        cout << endl;
-    }
-    cout << endl;*/
-    //MatrixOutput(m, n);
-   /* cout << endl << "enter second matrix" << endl;
-    b = MatrixInput(b, m, n);
-    MatrixOutput(b, m, n);*/
-    /*cout << endl << "enter multiplier" << endl;
-    cin >> x;*/
-    /*c = MatrixMultiplication(c,a, m, n,x);*/
-    cout << endl;
-    /*c=AnotherMatrixMultiplication(a, b, c,m, n);
-    MatrixOutput(c, m, n);*/
-    int a[] = { 1, 2, 3 };
-    int n = sizeof a / sizeof a[0];
-    heapPermutation(a, n, n);
-    cout << znaki(a, n);
-    cout << endl;
+    
     system("pause");
 }
