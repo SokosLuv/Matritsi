@@ -6,7 +6,7 @@ using namespace std;
 //int a[100][100]{};
 //int b[100][100]{};
 
-int** MatrixInput(int** a, int m, int n)
+float** MatrixInput(float** a, int m, int n)
 {
     //cout << m <<""<< n << endl;
     /*for (int i = 0; i < m; i++)
@@ -17,9 +17,9 @@ int** MatrixInput(int** a, int m, int n)
             cin >> a[i][j];
         }
     }*/
-    a = new int* [m];
+    a = new float* [m];
     for (int i = 0; i < m; i++) {
-        a[i] = new int[n];
+        a[i] = new float[n];
         for (int j = 0; j < n; j++) 
         {
             cout << "enter element " << i + 1 << " " << j + 1 << endl;
@@ -29,7 +29,7 @@ int** MatrixInput(int** a, int m, int n)
     return a;
 }
 
-void MatrixOutput(int** a, int m,int n)
+void MatrixOutput(float** a, int m,int n)
 {
     cout << endl;
     for (int i = 0; i < m; i++)
@@ -153,13 +153,13 @@ void heapPermutation(int p[], int size, int n)
     m=m*a[0]
 }*/
 
-int** copy(int** a, int m)
+float** copy(float** a, int m)
 {
     int n = m;
-    int** b = new int* [m];
+    float** b = new float* [m];
     for (int i = 0; i < m; i++)
     {
-        b[i] = new int[n];
+        b[i] = new float[n];
         for (int j = 0; j < n; j++)
         {
             b[i][j] = a[i][j];
@@ -168,13 +168,13 @@ int** copy(int** a, int m)
     return b;
 }
 
-int** edinichniy(int m)
+float** edinichniy(int m)
 {
     int n = m;
-    int** b = new int* [m];
+    float** b = new float* [m];
     for (int i = 0; i < m; i++)
     {
-        b[i] = new int[n];
+        b[i] = new float[n];
         for (int j = 0; j < n; j++)
         {
             if (i == j)
@@ -190,7 +190,7 @@ int** edinichniy(int m)
     return b;
 }
 
-void change_row(int** a, int k, int j, int m)
+void change_row(float** a, int k, int j, int m)
 {
     for (int i = 0; i < m; i++)
     {
@@ -201,7 +201,7 @@ void change_row(int** a, int k, int j, int m)
 
 }
 
-void mult_row(int** a, int k, int b, int m)
+void mult_row(float** a, int k, float b, int m)
 {
     for (int i = 0; i < m; i++)
     {
@@ -209,7 +209,7 @@ void mult_row(int** a, int k, int b, int m)
     }
 }
 
-void substract_row(int** a, int k, int j, int b, int m)
+void substract_row(float** a, int k, int j, float b, int m)
 {
     for (int i = 0; i < m; i++)
     {
@@ -217,13 +217,25 @@ void substract_row(int** a, int k, int j, int b, int m)
     }
 }
 
-float** inverse(int** a, int m)
+float** inverse(float** a, int m)
 {
-    int** e = copy(a, m);
+    float** e = copy(a, m);
     float** f = edinichniy(m);
-    for (int p = 0; p < m; p++)
+    for (int p = 0; p < m ; p++)
     {
-        if (e[p][p] != 0)
+        if (e[p][p] == 0)
+        {
+            for (int i = p + 1; i < m; i++)
+            {
+                if (e[i][p] != 0)
+                {
+                    change_row(e, p, i, m);
+                    change_row(f, p, i, m);
+                    break;
+                }
+            }
+        }
+        if (e[p][p] != 1)
         {
             float x = 1 / e[p][p];
             mult_row(e, p, x, m);
@@ -233,22 +245,27 @@ float** inverse(int** a, int m)
         {
             if (e[i][p] != 0)
             {
-                int x = e[i][0] / e[0][0];
-                substract_row(e, i, 1, x, m);
-                substract_row(f, i, 1, x, m);
+                float x = e[i][p];
+                substract_row(e, i, p, x, m);
+                substract_row(f, i, p, x, m);
             }
         }
         
     }
+    //MatrixOutput(e, m, m);
+    //cout << endl;
+    //MatrixOutput(f, m, m);
+
+
     return f;
 }
 
 int main()
 {
     int m, x, mm,nn,n;
-    int** a = nullptr;
-    int** b = nullptr;
-    int** c = nullptr;
+    float** a = nullptr;
+    //int** b = nullptr;
+    //int** c = nullptr;
     cout << "enter size of matrix" << endl;
     cin >> m;
     n = m;
@@ -257,9 +274,8 @@ int main()
         cout << "invalid number try again" << endl;
         cin >> m >> n;
     }
-    MatrixInput(a, m,m);
+    a = MatrixInput(a, m,m);
     float** ff=inverse(a, m);
-
-    
+    MatrixOutput(ff, m, n);
     system("pause");
 }
