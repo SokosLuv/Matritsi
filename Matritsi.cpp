@@ -67,12 +67,12 @@ int** MatrixMultiplication(int** a, int m, int n, int x)
     return b;
 }
 
-int** AnotherMatrixMultiplication(int** a, int**b, int** c, int m, int n)
+float** AnotherMatrixMultiplication(float** a, float**b, int m, int n)
 {
-    c = new int* [m];
+    float** c = new float* [m];
     for (int i = 0; i < m; i++)
     {
-        c[i] = new int [n];
+        c[i] = new float[n];
         for (int j = 0; j < n; j++)
         {
             c[i][j] = 0;
@@ -235,6 +235,11 @@ float** inverse(float** a, int m)
                 }
             }
         }
+        if (e[p][p] == 0)
+        {
+            cout << "matrix cant be inversed" << endl;
+            return {};
+        }
         if (e[p][p] != 1)
         {
             float x = 1 / e[p][p];
@@ -255,14 +260,27 @@ float** inverse(float** a, int m)
     //MatrixOutput(e, m, m);
     //cout << endl;
     //MatrixOutput(f, m, m);
-
-
+    for (int p = m - 1; p > 0; p--)
+    {
+        for (int i = 0; i < p; i++)
+        {
+            if (e[i][p] != 0)
+            {
+                float x= e[i][p];
+                substract_row(e, i, p, x, m);
+                substract_row(f, i, p, x, m);
+            }
+        }
+    }
+    //MatrixOutput(e, m, m);
+    //cout << endl;
+    //MatrixOutput(f, m, m);
     return f;
 }
 
 int main()
 {
-    int m, x, mm,nn,n;
+    int m, n;
     float** a = nullptr;
     //int** b = nullptr;
     //int** c = nullptr;
@@ -275,7 +293,8 @@ int main()
         cin >> m >> n;
     }
     a = MatrixInput(a, m,m);
-    float** ff=inverse(a, m);
-    MatrixOutput(ff, m, n);
+    float** ff= inverse(a, m);
+    MatrixOutput(ff, m,m);
+
     system("pause");
 }
